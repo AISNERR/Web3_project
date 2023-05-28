@@ -1,2 +1,2 @@
-# Werb3_project
+# Web3_project
 03-task
