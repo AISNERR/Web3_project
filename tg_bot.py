@@ -60,7 +60,7 @@ def callback_query(call):
 # Start button for specific topics
 @bot.message_handler(func=lambda message: message.text == 'Налоги')
 def legal_button(message):
-    bot.send_message(message.chat.id, f'Я могу помочь определить попало ли юридическое лицо в нетивные реестры ФНС. \
+    bot.send_message(message.chat.id, f'Я могу помочь определить попало ли юридическое лицо в негативные реестры ФНС. \
 Введите пожалуйста номер ИНН или ОГРН юридического лица в формате "12345678-номер"')
     
 @bot.message_handler(func=lambda message: message.text.endswith("номер"))
@@ -155,7 +155,7 @@ def stop_button(message):
     bot.send_message(message.chat.id, 'Press the button to stop:', reply_markup=stop_button)
 
 @bot.message_handler(func=lambda message: message.text.endswith("оценка"))
-def answer_legal_button(message):
+def answer_legal_mark(message):
     message_with_number = '-'.join(message.text.split('-')[:-1])
     if message_with_number == '1':
         bot.send_message(message.chat.id,  "разработчики учтут ваше мнение \
@@ -165,6 +165,10 @@ def answer_legal_button(message):
 мы обязательно будем улучшаться !" )
     if message_with_number == '5':
         bot.send_message(message.chat.id,  "спасибо за высокую оценку !")
+
+@bot.message_handler(func=lambda message: message.text)
+def answer_mistake(message):
+    bot.send_message(message.chat.id,  "я Вас не понимаю, уточните запрос пожалуйста")
 
 
 # Callback query handler for the inline buttons
