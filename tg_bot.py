@@ -60,8 +60,8 @@ def callback_query(call):
 # Start button for specific topics
 @bot.message_handler(func=lambda message: message.text == 'Налоги')
 def legal_button(message):
-    bot.send_message(message.chat.id, f'Я могу помочь определить попало ли юридическое лицо в негативные реестры ФНС. \
-Введите пожалуйста номер ИНН или ОГРН юридического лица в формате "12345678-номер"')
+    bot.send_message(message.chat.id, f'Я помогу определить наличие юридического лица в негативных реестрах ФНС. \
+Введите номер ИНН или ОГРН юридического лица в формате "12345678-номер"')
     
 @bot.message_handler(func=lambda message: message.text.endswith("номер"))
 def answer_legal_button(message):
@@ -105,8 +105,8 @@ def answer_legal_button(message):
     МассРук: {answer_dict["Негатив"]["МассРук"]}, РукЛиквКомп: {answer_dict["Негатив"]["РукЛиквКомп"]}, \
     НедостоверРук: {answer_dict["Негатив"]["НедостоверРук"]}, Дополнительно: {answer_dict["Негатив"]["Текст"]}'
     bot.send_message(message.chat.id, response_from_bot)
-    bot.send_message(message.chat.id, "Пожалуйста ответьте, на сколько по шкале от 1 до 5 \
-    вы довольны моей работой в формате '1-оценка' ")
+    bot.send_message(message.chat.id, "Оцените пожалуйста, на сколько по шкале от 1 до 5 \
+    вы остались довольны моей работой в формате '1-оценка' ")
 
 
 @bot.message_handler(func=lambda message: message.text == 'Юридические вопросы')
@@ -158,8 +158,7 @@ def stop_button(message):
 def answer_legal_mark(message):
     message_with_number = '-'.join(message.text.split('-')[:-1])
     if message_with_number == '1':
-        bot.send_message(message.chat.id,  "разработчики учтут ваше мнение \
-и обязательно улучшат бота")
+        bot.send_message(message.chat.id,  "Спасибо, мы учтем вашу оценку")
     if message_with_number == '3':
         bot.send_message(message.chat.id, "спасибо за среднюю оценку, \
 мы обязательно будем улучшаться !" )
