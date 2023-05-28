@@ -15,7 +15,7 @@ def start_command(message):
              KeyboardButton('Аналитика рынка'))
 
     # Sending the menu to the user
-    bot.send_message(message.chat.id, 'Добро пожаловать в Бизнес Ассистент tada.team', reply_markup=menu)
+    bot.send_message(message.chat.id, 'Добро пожаловать в Бизнес Ассистент tada.team. Выбирите пожалуйста опцию бизнес вопросов.', reply_markup=menu)
 
 # Stop command
 @bot.message_handler(commands=['stop'])
@@ -58,10 +58,10 @@ def callback_query(call):
         bot.answer_callback_query(call.id, text='Stopping...')
 
 # Start button for specific topics
-@bot.message_handler(func=lambda message: message.text == 'Юридические вопросы')
+@bot.message_handler(func=lambda message: message.text == 'Налоги')
 def legal_button(message):
-    bot.send_message(message.chat.id, f'Я могу помочь определить попало ли юридическое лицо в нетивные реестры ФНС \
-                    Введите пожалуйста номер ИНН или ОГРН юридического лица в формате "12345678-номер"')
+    bot.send_message(message.chat.id, f'Я могу помочь определить попало ли юридическое лицо в нетивные реестры ФНС. \
+Введите пожалуйста номер ИНН или ОГРН юридического лица в формате "12345678-номер"')
     
 @bot.message_handler(func=lambda message: message.text.endswith("номер"))
 def answer_legal_button(message):
@@ -95,20 +95,24 @@ def answer_legal_button(message):
 
     if answer_dict.get("Негатив") is None:
         response_from_bot = f"Данное юридическое лицо не попало в негативные реестры ФНС, отметки \
-        о недостоверных данных, признаки «массового» директора, учредителя, решений о ликвидации, \
-        реорганизации и прочие"
+    о недостоверных данных, признаки «массового» директора, учредителя, решений о ликвидации, \
+    реорганизации и прочие"
     else:
         response_from_bot = f'Данное юридическое лицо попало в негативные реестры ФНС, найдены отметки \
-        о недостоверных данных, признаки «массового» директора, учредителя, решений о ликвидации, \
-        реорганизации и прочие. Инн: {answer_dict["ИНН"]}. ОГРН {answer_dict["ОГРН"]}. Дополнительная информация: \
-        {answer_dict["Негатив"]}'
+    о недостоверных данных, признаки «массового» директора, учредителя, решений о ликвидации, \
+    реорганизации и прочие. Инн: {answer_dict["ИНН"]}. ОГРН {answer_dict["ОГРН"]}. Дополнительная информация: \
+    Статус:{answer_dict["Негатив"]["Статус"]}, Недостоверный адрес: {answer_dict["Негатив"]["НедостоверАдрес"]}, \
+    МассРук: {answer_dict["Негатив"]["МассРук"]}, РукЛиквКомп: {answer_dict["Негатив"]["РукЛиквКомп"]}, \
+    НедостоверРук: {answer_dict["Негатив"]["НедостоверРук"]}, Дополнительно: {answer_dict["Негатив"]["Текст"]}'
     bot.send_message(message.chat.id, response_from_bot)
+    bot.send_message(message.chat.id, "Пожалуйста ответьте, на сколько по шкале от 1 до 5 \
+    вы довольны моей работой в формате '1-оценка' ")
 
 
-@bot.message_handler(func=lambda message: message.text == 'Налоги')
+@bot.message_handler(func=lambda message: message.text == 'Юридические вопросы')
 def tax_button(message):
     # Do something when the tax button is pressed
-    bot.send_message(message.chat.id, 'Вы выбрали налоги.')
+    bot.send_message(message.chat.id, 'Вы выбрали Юридические вопросы.')
 
 @bot.message_handler(func=lambda message: message.text == 'Поиск компаний')
 def company_search_button(message):
@@ -149,6 +153,19 @@ def stop_button(message):
 
     # Sending the inline keyboard to the user
     bot.send_message(message.chat.id, 'Press the button to stop:', reply_markup=stop_button)
+
+@bot.message_handler(func=lambda message: message.text.endswith("оценка"))
+def answer_legal_button(message):
+    message_with_number = '-'.join(message.text.split('-')[:-1])
+    if message_with_number == '1':
+        bot.send_message(message.chat.id,  "разработчики учтут ваше мнение \
+и обязательно улучшат бота")
+    if message_with_number == '3':
+        bot.send_message(message.chat.id, "спасибо за среднюю оценку, \
+мы обязательно будем улучшаться !" )
+    if message_with_number == '5':
+        bot.send_message(message.chat.id,  "спасибо за высокую оценку !")
+
 
 # Callback query handler for the inline buttons
 @bot.callback_query_handler(func=lambda call: True)
