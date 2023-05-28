@@ -15,7 +15,7 @@ def start_command(message):
              KeyboardButton('Аналитика рынка'))
 
     # Sending the menu to the user
-    bot.send_message(message.chat.id, 'Добро пожаловать в Бизнес Ассистент tada.team. Выбирите пожалуйста опцию бизнес вопросов.', reply_markup=menu)
+    bot.send_message(message.chat.id, 'Добро пожаловать в Web3 Business Assistant. Выберите опцию бизнес вопросов.', reply_markup=menu)
 
 # Stop command
 @bot.message_handler(commands=['stop'])
