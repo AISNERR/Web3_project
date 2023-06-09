@@ -4,7 +4,7 @@ from telebot.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMar
  
 
 # Replace YOUR_TOKEN with your Telegram bot token
-bot = telebot.TeleBot('6238604932:AAHN-8WET49fAFgtEQsBDhYEJR6V7gNAw7E')
+bot = telebot.TeleBot('2045837540:AAEfPRWhSNkZR2IpbVmMQHC9qOplDpcgnA0')
 
 # Start command
 @bot.message_handler(commands=['start'])
@@ -101,9 +101,9 @@ def answer_legal_button(message):
         response_from_bot = f'Данное юридическое лицо попало в негативные реестры ФНС, найдены отметки \
     о недостоверных данных, признаки «массового» директора, учредителя, решений о ликвидации, \
     реорганизации и прочие. Инн: {answer_dict["ИНН"]}. ОГРН {answer_dict["ОГРН"]}. Дополнительная информация: \
-    Статус:{answer_dict["Негатив"]["Статус"]}, Недостоверный адрес: {answer_dict["Негатив"]["НедостоверАдрес"]}, \
-    МассРук: {answer_dict["Негатив"]["МассРук"]}, РукЛиквКомп: {answer_dict["Негатив"]["РукЛиквКомп"]}, \
-    НедостоверРук: {answer_dict["Негатив"]["НедостоверРук"]}, Дополнительно: {answer_dict["Негатив"]["Текст"]}'
+    Статус:{answer_dict["Негатив"].get("Статус")}, Недостоверный адрес: {answer_dict["Негатив"].get("НедостоверАдрес")}, \
+    МассРук: {answer_dict["Негатив"].get("МассРук")}, РукЛиквКомп: {answer_dict["Негатив"].get("РукЛиквКомп")}, \
+    НедостоверРук: {answer_dict["Негатив"].get("НедостоверРук")}, Дополнительно: {answer_dict["Негатив"].get("Текст")}'
     bot.send_message(message.chat.id, response_from_bot)
     bot.send_message(message.chat.id, "Оцените пожалуйста, на сколько по шкале от 1 до 5 \
     вы остались довольны моей работой в формате '1-оценка' ")
