@@ -59,7 +59,7 @@ def callback_query(call):
         bot.answer_callback_query(call.id, text='Stopping...')
 
 # Start button for specific topics
-@bot.message_handler(func=lambda message: message.text == 'Налоги')
+@bot.message_handler(func=lambda message: message.text == 'ФНС')
 def legal_button(message):
     bot.send_message(message.chat.id, f'Я помогу определить наличие юридического лица в негативных реестрах ФНС. \
 Введите номер ИНН или ОГРН юридического лица в формате "12345678-номер"')
@@ -78,36 +78,40 @@ def answer_legal_button(message):
         r = requests.get(url,  params=params)
         result = r.json()
         return result
-    response = get_data()
-
-    answer_dict = {
-                    "ОГРН":  None,
-                    "ИНН":  None,
-                    "Позитив": None,
-                    "Негатив":  None,
-                }
+    try:
+        response = get_data()
+     
+        answer_dict = {
+                        "ОГРН":  None,
+                        "ИНН":  None,
+                        "Позитив": None,
+                        "Негатив":  None,
+                    }
     
-    for option in response["items"]:
-        for sortion in option:
-            answer_dict["ОГРН"] = option[sortion].get("ОГРН")
-            answer_dict["ИНН"] = option[sortion].get("ИНН")
-            answer_dict["Позитив"] = option[sortion].get("Позитив")
-            answer_dict["Негатив"] = option[sortion].get("Негатив")
+        for option in response["items"]:
+            for sortion in option:
+                answer_dict["ОГРН"] = option[sortion].get("ОГРН")
+                answer_dict["ИНН"] = option[sortion].get("ИНН")
+                answer_dict["Позитив"] = option[sortion].get("Позитив")
+                answer_dict["Негатив"] = option[sortion].get("Негатив")
 
-    if answer_dict.get("Негатив") is None:
-        response_from_bot = f"Данное юридическое лицо не попало в негативные реестры ФНС, отметки \
-    о недостоверных данных, признаки «массового» директора, учредителя, решений о ликвидации, \
-    реорганизации и прочие"
-    else:
-        response_from_bot = f'Данное юридическое лицо попало в негативные реестры ФНС, найдены отметки \
-    о недостоверных данных, признаки «массового» директора, учредителя, решений о ликвидации, \
-    реорганизации и прочие. Инн: {answer_dict["ИНН"]}. ОГРН {answer_dict["ОГРН"]}. Дополнительная информация: \
-    Статус:{answer_dict["Негатив"].get("Статус")}, Недостоверный адрес: {answer_dict["Негатив"].get("НедостоверАдрес")}, \
-    МассРук: {answer_dict["Негатив"].get("МассРук")}, РукЛиквКомп: {answer_dict["Негатив"].get("РукЛиквКомп")}, \
-    НедостоверРук: {answer_dict["Негатив"].get("НедостоверРук")}, Дополнительно: {answer_dict["Негатив"].get("Текст")}'
-    bot.send_message(message.chat.id, response_from_bot)
-    bot.send_message(message.chat.id, "Оцените пожалуйста, на сколько по шкале от 1 до 5 \
-    вы остались довольны моей работой в формате '1-оценка' ")
+        if answer_dict.get("Негатив") is None:
+            response_from_bot = f"Данное юридическое лицо не попало в негативные реестры ФНС, отметки \
+        о недостоверных данных, признаки «массового» директора, учредителя, решений о ликвидации, \
+        реорганизации и прочие"
+        else:
+            response_from_bot = f'Данное юридическое лицо попало в негативные реестры ФНС, найдены отметки \
+        о недостоверных данных, признаки «массового» директора, учредителя, решений о ликвидации, \
+        реорганизации и прочие. Инн: {answer_dict["ИНН"]}. ОГРН {answer_dict["ОГРН"]}. Дополнительная информация: \
+        Статус:{answer_dict["Негатив"].get("Статус")}, Недостоверный адрес: {answer_dict["Негатив"].get("НедостоверАдрес")}, \
+        МассРук: {answer_dict["Негатив"].get("МассРук")}, РукЛиквКомп: {answer_dict["Негатив"].get("РукЛиквКомп")}, \
+        НедостоверРук: {answer_dict["Негатив"].get("НедостоверРук")}, Дополнительно: {answer_dict["Негатив"].get("Текст")}'
+        bot.send_message(message.chat.id, response_from_bot)
+        bot.send_message(message.chat.id, "Оцените пожалуйста, на сколько по шкале от 1 до 5 \
+        вы остались довольны моей работой в формате '1-оценка' ")
+    except Exception:
+        bot.send_message(message.chat.id, "ИНН невалидный")
+        bot.send_message(message.chat.id, "попробуйте ввести валидный ИНН")
 
 
 @bot.message_handler(func=lambda message: message.text == 'Юридические вопросы')
