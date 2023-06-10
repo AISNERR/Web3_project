@@ -4,15 +4,16 @@ from telebot.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMar
  
 
 # Replace YOUR_TOKEN with your Telegram bot token
-bot = telebot.TeleBot('2045837540:AAEfPRWhSNkZR2IpbVmMQHC9qOplDpcgnA0')
+bot = telebot.TeleBot('6238604932:AAHN-8WET49fAFgtEQsBDhYEJR6V7gNAw7E')
 
 # Start command
 @bot.message_handler(commands=['start'])
 def start_command(message):
     # Creating a menu with buttons
     menu = ReplyKeyboardMarkup(resize_keyboard=True)
-    menu.add(KeyboardButton('Юридические вопросы'), KeyboardButton('Налоги'), KeyboardButton('Поиск компаний'),
-             KeyboardButton('Аналитика рынка'))
+    menu.add(KeyboardButton('ФНС'))
+    # menu.add(KeyboardButton('Юридические вопросы'), KeyboardButton('Налоги'), KeyboardButton('Поиск компаний'),
+    #          KeyboardButton('Аналитика рынка'))
 
     # Sending the menu to the user
     bot.send_message(message.chat.id, 'Добро пожаловать в Web3 Business Assistant. Выберите опцию бизнес вопросов.', reply_markup=menu)
@@ -69,7 +70,7 @@ def answer_legal_button(message):
 
     def  get_data():
         url = 'https://api-fns.ru/api/check'
-        params = { 'key': '231f6fc2b1d5545a73d0eeba4655c68653854903',
+        params = { 'key': '69cbf9c3452aed82b8eb627c33cb76714d4633f6',
                 'format': 'json',
                 'req': f'{str(message_with_number)}',
                 
